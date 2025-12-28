@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Camera, LayoutDashboard, Package, Sparkles, Heart, ShoppingCart, LogOut, Menu, X } from 'lucide-react';
+import { Camera, LayoutDashboard, Package, Sparkles, Heart, ShoppingCart, LogOut, Menu, X, Moon, Sun } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const DashboardHeader: React.FC = () => {
   const { user, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -61,6 +63,14 @@ const DashboardHeader: React.FC = () => {
               Hi, <span className="font-medium text-foreground">{user?.username}</span>
             </span>
             <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+              aria-label="Toggle theme"
+            >
+              {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+            </button>
+            <button
               onClick={handleSignOut}
               className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
             >
@@ -104,6 +114,17 @@ const DashboardHeader: React.FC = () => {
               <p className="text-sm text-muted-foreground mb-3">
                 Signed in as <span className="font-medium text-foreground">{user?.username}</span>
               </p>
+              <div className="flex items-center gap-2 mb-4">
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+                  title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+                  aria-label="Toggle theme"
+                >
+                  {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+                  <span>{theme === 'light' ? 'Dark' : 'Light'} Mode</span>
+                </button>
+              </div>
               
               <button
                 onClick={handleSignOut}
